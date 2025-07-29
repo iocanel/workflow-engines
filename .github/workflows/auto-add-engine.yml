@@ -183,7 +183,7 @@ jobs:
           - Auto-generated from issue #${{ steps.get-issue.outputs.issue-number }}"
 
       - name: Push branch
-        run: git push origin "${{ steps.parse.outputs.branch-name }}"
+        run: git push origin "${{ steps.parse.outputs.branch-name }}" --force
 
       - name: Create Pull Request
         uses: actions/github-script@v7
