@@ -20,7 +20,7 @@ Found something wrong? We'd love to hear about it!
 To add a new workflow engine:
 
 1. **Fork the repository**
-2. **Edit the `workflow-engines.json` file** (preferred) or the `embeddedWorkflowData` array in `index.html`
+2. **Edit the `workflow-engines.json` file**
 3. **Add your engine** following this structure:
 
 ```javascript
@@ -54,7 +54,7 @@ To add a new workflow engine:
 To update existing engines:
 
 1. **Fork the repository**
-2. **Locate the engine** in the `workflow-engines.json` file (preferred) or the `embeddedWorkflowData` array in `index.html`
+2. **Locate the engine** in the `workflow-engines.json` file
 3. **Update the relevant fields**:
    - Fix incorrect descriptions
    - Add missing tags
@@ -116,12 +116,9 @@ workflow-engines/
 
 ### Data Location
 
-The application uses a **hybrid approach**:
-- **Primary data source**: `workflow-engines.json` file (when served via HTTP)
-- **Fallback data source**: `embeddedWorkflowData` array within `index.html` around line 234 (for file:// access)
-- **Categories**: Defined in the `categorizations` object around line 225
-
-When editing data, prefer updating the JSON file. The embedded data serves as a fallback for offline/file access.
+**Single source of truth**: All workflow engine data is stored in `workflow-engines.json`
+**Categories**: Defined in the `categorizations` object within `index.html`
+**HTTP Server Required**: The application loads data from the JSON file and requires an HTTP server to run
 
 ### Testing Changes
 
