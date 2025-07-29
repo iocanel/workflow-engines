@@ -341,12 +341,24 @@
   let activeFilters = {};
 
   function buildFacets() {
+    // First, filter data based on current filters to get the base set
+    let filteredData = workflowData.filter(item => {
+      return Object.keys(activeFilters).every(field => {
+        const filterValues = activeFilters[field];
+        
+        if (item.tags && Array.isArray(item.tags)) {
+          return filterValues.some(filterVal => item.tags.includes(filterVal));
+        }
+        return false;
+      });
+    });
+
     const facetsHtml = facetConfig.map(facet => {
       const values = [];
       
       if (facet.field === 'other') {
         // For "other" category, collect all tags that don't belong to any defined category
-        workflowData.forEach(item => {
+        filteredData.forEach(item => {
           if (item.tags && Array.isArray(item.tags)) {
             item.tags.forEach(tag => {
               const belongsToCategory = Object.values(categorizations).some(categoryTags => categoryTags.includes(tag));
@@ -364,7 +376,7 @@
         // For defined categories, use the categorizations mapping
         const relevantTags = categorizations[facet.field] || [];
         
-        workflowData.forEach(item => {
+        filteredData.forEach(item => {
           if (item.tags && Array.isArray(item.tags)) {
             item.tags.forEach(tag => {
               if (relevantTags.includes(tag)) {
@@ -379,14 +391,17 @@
         });
       }
 
-      const facetItems = values.map(val => `
-        <div class="facet-item">
-          <label>
-            <input type="checkbox" value="${val.value}" data-field="${facet.field}" onchange="updateFilters()">
-            ${val.value} <span class="count">(${val.count})</span>
-          </label>
-        </div>
-      `).join('');
+      const facetItems = values.map(val => {
+        const isChecked = activeFilters[facet.field] && activeFilters[facet.field].includes(val.value) ? 'checked' : '';
+        return `
+          <div class="facet-item">
+            <label>
+              <input type="checkbox" value="${val.value}" data-field="${facet.field}" onchange="updateFilters()" ${isChecked}>
+              ${val.value} <span class="count">(${val.count})</span>
+            </label>
+          </div>
+        `;
+      }).join('');
 
       return `
         <div class="facet-group">
@@ -414,6 +429,7 @@
       if (!activeFilters[field]) activeFilters[field] = [];
       activeFilters[field].push(value);
     });
+    buildFacets(); // Rebuild facets with updated counts
     displayResults();
   }
 
