@@ -159,221 +159,145 @@
   <div id="facets"></div>
 </div>
 <div class="content">
-  <h1>Workflow Engine Explorer</h1>
+  <h1>Workflow Engines</h1>
   <div id="results" class="results"></div>
 </div>
 
 <script>
+  // Define categorization mappings
+  const categorizations = {
+    ontological: ["Event", "Process", "Data", "Integration", "Automation"],
+    architectural: ["Log", "State-machine", "DAG", "Code flows"],
+    teleological: ["Microservice orchestration", "Business process automation", "Data Pipelines", "Integration", "CI/CD", "Machine Learning"],
+    structural: ["Code-as-workflow", "DSL", "Graph (DAG)", "YAML", "Node flows", "Rule automation", "JSON", "Visual workflow design"]
+  };
+
   const workflowData = [
     {
       "name": "Temporal",
       "url": "https://temporal.io",
       "icon": "icons/temporal.png",
-      "ontological": "Event-centric",
-      "architectural": "Log-based",
-      "teleological": "Microservice orchestration",
-      "structural": "Code-as-workflow",
-      "other": ["Persistent orchestration", "Replayable / deterministic"]
+      "tags": ["Event", "Log", "Microservice orchestration", "Code-as-workflow", "Persistent", "Replayable"]
     },
     {
       "name": "Airflow",
       "url": "https://airflow.apache.org",
       "icon": "icons/airflow.png",
-      "ontological": "Data-centric",
-      "architectural": "DAG-based",
-      "teleological": "Data Pipelines",
-      "structural": "Graph-based (DAG)",
-      "other": ["Ephemeral execution"]
+      "tags": ["Data", "DAG", "Data Pipelines", "Graph (DAG)", "Ephemeral"]
     },
     {
       "name": "Camunda (Zeebe)",
       "url": "https://camunda.com",
       "icon": "icons/camunda.png",
-      "ontological": "Process-centric",
-      "architectural": "State-machine based",
-      "teleological": "Business process automation",
-      "structural": "Model-driven / DSLs",
-      "other": ["Persistent orchestration", "Microservice orchestration"]
+      "tags": ["Process", "State-machine", "Business process automation", "DSL", "Persistent", "Microservice orchestration"]
     },
     {
       "name": "Apache Camel",
       "url": "https://camel.apache.org",
       "icon": "icons/camel.png",
-      "ontological": "Integration-centric",
-      "architectural": "Code flows",
-      "teleological": "Integration",
-      "structural": "Model-driven / DSLs",
-      "other": ["Ephemeral execution", "Mutable / imperative"]
+      "tags": ["Integration", "Code flows", "DSL", "Ephemeral", "Mutable"]
     },
     {
       "name": "Dagster",
       "url": "https://dagster.io",
       "icon": "icons/dagster.png",
-      "ontological": "Data-centric",
-      "architectural": "DAG-based",
-      "teleological": "Data Pipelines",
-      "structural": "Code-as-workflow",
-      "other": ["Persistent orchestration", "Type-aware"]
+      "tags": ["Data", "DAG", "Data Pipelines", "Code-as-workflow", "Persistent", "Type-aware"]
     },
     {
       "name": "Prefect",
       "url": "https://prefect.io",
       "icon": "icons/prefect.png",
-      "ontological": "Data-centric",
-      "architectural": "Code flows",
-      "teleological": "Data Pipelines",
-      "structural": "Code-as-workflow",
-      "other": ["Ephemeral execution", "Dynamic orchestration"]
+      "tags": ["Data", "Code flows", "Data Pipelines", "Code-as-workflow", "Ephemeral", "Dynamic orchestration"]
     },
     {
       "name": "Luigi",
       "url": "https://github.com/spotify/luigi",
       "icon": "icons/luigi.png",
-      "ontological": "Data-centric",
-      "architectural": "DAG-based",
-      "teleological": "Data Pipelines",
-      "structural": "Graph-based (DAG)",
-      "other": ["Ephemeral execution"]
+      "tags": ["Data", "DAG", "Data Pipelines", "Graph (DAG)", "Ephemeral"]
     },
     {
       "name": "Argo Workflows",
       "url": "https://argoproj.github.io/workflows",
       "icon": "icons/argo.png",
-      "ontological": "Process-centric",
-      "architectural": "DAG-based",
-      "teleological": "CI/CD",
-      "structural": "YAML specifications",
-      "other": ["Ephemeral execution", "Kubernetes-native", "Container-centric"]
+      "tags": ["Process", "DAG", "CI/CD", "YAML", "Ephemeral", "Kubernetes-native", "Container"]
     },
     {
       "name": "Tekton",
       "url": "https://tekton.dev",
       "icon": "icons/tekton.png",
-      "ontological": "Process-centric",
-      "architectural": "Code flows",
-      "teleological": "CI/CD",
-      "structural": "YAML specifications",
-      "other": ["Ephemeral execution", "Kubernetes-native", "Pipeline-as-code", "Container-centric"]
+      "tags": ["Process", "Code flows", "CI/CD", "YAML", "Ephemeral", "Kubernetes-native", "Pipeline-as-code", "Container"]
     },
     {
       "name": "Kestra",
       "url": "https://kestra.io",
       "icon": "icons/kestra.png",
-      "ontological": "Data-centric",
-      "architectural": "DAG-based",
-      "teleological": "Data Pipelines",
-      "structural": "YAML specifications",
-      "other": ["Persistent orchestration", "Event-driven"]
+      "tags": ["Data", "DAG", "Data Pipelines", "YAML", "Persistent", "Event-driven"]
     },
     {
       "name": "Flowable",
       "url": "https://flowable.com",
       "icon": "icons/flowable.png",
-      "ontological": "Process-centric",
-      "architectural": "DAG-based",
-      "teleological": "Business process automation",
-      "structural": "Model-driven / DSLs",
-      "other": ["Persistent orchestration", "State-machine based"]
+      "tags": ["Process", "DAG", "Business process automation", "DSL", "Persistent", "State-machine"]
     },
     {
       "name": "Activiti",
       "url": "https://www.activiti.org",
       "icon": "icons/activiti.png",
-      "ontological": "Process-centric",
-      "architectural": "DAG-based",
-      "teleological": "Business process automation",
-      "structural": "Model-driven / DSLs",
-      "other": ["Persistent orchestration", "State-machine based"]
+      "tags": ["Process", "DAG", "Business process automation", "DSL", "Persistent", "State-machine"]
     },
     {
       "name": "jBPM",
       "url": "https://www.jbpm.org",
       "icon": "icons/jbpm.png",
-      "ontological": "Process-centric",
-      "architectural": "DAG-based",
-      "teleological": "Business process automation",
-      "structural": "Model-driven / DSLs",
-      "other": ["Persistent orchestration", "State-machine based"]
+      "tags": ["Process", "DAG", "Business process automation", "DSL", "Persistent", "State-machine"]
     },
     {
       "name": "Boomi",
       "url": "https://boomi.com",
       "icon": "icons/boomi.png",
-      "ontological": "Integration-centric",
-      "architectural": "Code flows",
-      "teleological": "Integration",
-      "structural": "Model-driven / DSLs",
-      "other": ["Cloud-native", "Managed service", "Visual workflow design"]
+      "tags": ["Integration", "Code flows", "DSL", "Cloud-native", "Managed service", "Visual workflow design"]
     },
     {
       "name": "n8n",
       "url": "https://n8n.io",
       "icon": "icons/n8n.png",
-      "ontological": "Automation-centric",
-      "architectural": "Code flows",
-      "teleological": "Business process automation",
-      "structural": "Node-based flows",
-      "other": ["Event-driven", "Self-hosted", "Visual workflow design"]
+      "tags": ["Automation", "Code flows", "Business process automation", "Node flows", "Event-driven", "Self-hosted", "Visual workflow design"]
     },
     {
       "name": "Make",
       "url": "https://make.com",
       "icon": "icons/make.png",
-      "ontological": "Automation-centric",
-      "architectural": "Code flows",
-      "teleological": "Business process automation",
-      "structural": "Node-based flows",
-      "other": ["Event-driven", "Cloud-native", "Visual workflow design"]
+      "tags": ["Automation", "Code flows", "Business process automation", "Node flows", "Event-driven", "Cloud-native", "Visual workflow design"]
     },
     {
       "name": "Zapier",
       "url": "https://zapier.com",
       "icon": "icons/zapier.png",
-      "ontological": "Automation-centric",
-      "architectural": "Code flows",
-      "teleological": "Business process automation",
-      "structural": "Rule-based automation",
-      "other": ["Event-driven", "Cloud-native", "Trigger-action flows"]
+      "tags": ["Automation", "Code flows", "Business process automation", "Rule automation", "Event-driven", "Cloud-native", "Trigger-action flows"]
     },
     {
       "name": "AWS Step Functions",
       "url": "https://aws.amazon.com/step-functions/",
       "icon": "icons/aws-step-functions.png",
-      "ontological": "Event-centric",
-      "architectural": "State-machine based",
-      "teleological": "Serverless orchestration",
-      "structural": "JSON state machines",
-      "other": ["Cloud-native", "Managed service", "Event-driven", "Serverless-centric"]
+      "tags": ["Event", "State-machine", "Serverless", "JSON", "Cloud-native", "Managed service", "Event-driven"]
     },
     {
       "name": "Azure Logic Apps",
       "url": "https://azure.microsoft.com/en-us/services/logic-apps/",
       "icon": "icons/azure-logic-apps.png",
-      "ontological": "Process-centric",
-      "architectural": "Code flows",
-      "teleological": "Integration",
-      "structural": "Visual workflow design",
-      "other": ["Cloud-native", "Managed service", "Event-driven"]
+      "tags": ["Process", "Code flows", "Integration", "Visual workflow design", "Cloud-native", "Managed service", "Event-driven"]
     },
     {
       "name": "Google Cloud Workflows",
       "url": "https://cloud.google.com/workflows",
       "icon": "icons/google-cloud-workflows.png",
-      "ontological": "Event-centric",
-      "architectural": "Code flows",
-      "teleological": "Serverless orchestration",
-      "structural": "YAML specifications",
-      "other": ["Cloud-native", "Managed service", "Event-driven", "Serverless-centric"]
+      "tags": ["Event", "Code flows", "Serverless", "YAML", "Cloud-native", "Managed service", "Event-driven"]
     },
     {
       "name": "Kubeflow Pipelines",
       "url": "https://www.kubeflow.org/docs/components/pipelines/",
       "icon": "icons/kubeflow.png",
-      "ontological": "Data-centric",
-      "architectural": "DAG-based",
-      "teleological": "ML model orchestration",
-      "structural": "Code-as-workflow",
-      "other": ["Kubernetes-native", "Experiment tracking", "ML-centric"]
+      "tags": ["Data", "DAG", "Machine Learning", "Code-as-workflow", "Kubernetes-native", "Experiment tracking"]
     }
   ];
 
@@ -390,24 +314,41 @@
   function buildFacets() {
     const facetsHtml = facetConfig.map(facet => {
       const values = [];
-      workflowData.forEach(item => {
-        const fieldValue = item[facet.field];
-        if (Array.isArray(fieldValue)) {
-          fieldValue.forEach(val => {
-            if (!values.find(v => v.value === val)) {
-              values.push({value: val, count: 1});
-            } else {
-              values.find(v => v.value === val).count++;
-            }
-          });
-        } else {
-          if (!values.find(v => v.value === fieldValue)) {
-            values.push({value: fieldValue, count: 1});
-          } else {
-            values.find(v => v.value === fieldValue).count++;
+      
+      if (facet.field === 'other') {
+        // For "other" category, collect all tags that don't belong to any defined category
+        workflowData.forEach(item => {
+          if (item.tags && Array.isArray(item.tags)) {
+            item.tags.forEach(tag => {
+              const belongsToCategory = Object.values(categorizations).some(categoryTags => categoryTags.includes(tag));
+              if (!belongsToCategory) {
+                if (!values.find(v => v.value === tag)) {
+                  values.push({value: tag, count: 1});
+                } else {
+                  values.find(v => v.value === tag).count++;
+                }
+              }
+            });
           }
-        }
-      });
+        });
+      } else {
+        // For defined categories, use the categorizations mapping
+        const relevantTags = categorizations[facet.field] || [];
+        
+        workflowData.forEach(item => {
+          if (item.tags && Array.isArray(item.tags)) {
+            item.tags.forEach(tag => {
+              if (relevantTags.includes(tag)) {
+                if (!values.find(v => v.value === tag)) {
+                  values.push({value: tag, count: 1});
+                } else {
+                  values.find(v => v.value === tag).count++;
+                }
+              }
+            });
+          }
+        });
+      }
 
       const facetItems = values.map(val => `
         <div class="facet-item">
@@ -450,30 +391,42 @@
   function displayResults() {
     let filteredData = workflowData.filter(item => {
       return Object.keys(activeFilters).every(field => {
-        const fieldValue = item[field];
         const filterValues = activeFilters[field];
         
-        if (Array.isArray(fieldValue)) {
-          return filterValues.some(filterVal => fieldValue.includes(filterVal));
-        } else {
-          return filterValues.includes(fieldValue);
+        if (item.tags && Array.isArray(item.tags)) {
+          return filterValues.some(filterVal => item.tags.includes(filterVal));
         }
+        return false;
       });
     });
 
-    const resultsHtml = filteredData.map(item => `
-      <div class="result-item">
-        <h4>
-          <img src="${item.icon}" alt="${item.name} icon" class="engine-icon">
-          <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a>
-        </h4>
-        <div class="field"><strong>Ontological:</strong> ${item.ontological}</div>
-        <div class="field"><strong>Architectural:</strong> ${item.epistemological}</div>
-        <div class="field"><strong>Teleological:</strong> ${item.teleological}</div>
-        <div class="field"><strong>Structural:</strong> ${item.formalism}</div>
-        <div class="field"><strong>Other:</strong> ${Array.isArray(item.underlying) ? item.underlying.join(', ') : item.underlying}</div>
-      </div>
-    `).join('');
+    const resultsHtml = filteredData.map(item => {
+      // Extract tags by category for display
+      const ontologicalTags = item.tags ? item.tags.filter(tag => categorizations.ontological.includes(tag)) : [];
+      const architecturalTags = item.tags ? item.tags.filter(tag => categorizations.architectural.includes(tag)) : [];
+      const teleologicalTags = item.tags ? item.tags.filter(tag => categorizations.teleological.includes(tag)) : [];
+      const structuralTags = item.tags ? item.tags.filter(tag => categorizations.structural.includes(tag)) : [];
+      const otherTags = item.tags ? item.tags.filter(tag => 
+        !categorizations.ontological.includes(tag) &&
+        !categorizations.architectural.includes(tag) &&
+        !categorizations.teleological.includes(tag) &&
+        !categorizations.structural.includes(tag)
+      ) : [];
+
+      return `
+        <div class="result-item">
+          <h4>
+            <img src="${item.icon}" alt="${item.name} icon" class="engine-icon">
+            <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a>
+          </h4>
+          <div class="field"><strong>Ontological:</strong> ${ontologicalTags.join(', ')}</div>
+          <div class="field"><strong>Architectural:</strong> ${architecturalTags.join(', ')}</div>
+          <div class="field"><strong>Teleological:</strong> ${teleologicalTags.join(', ')}</div>
+          <div class="field"><strong>Structural:</strong> ${structuralTags.join(', ')}</div>
+          <div class="field"><strong>Other:</strong> ${otherTags.join(', ')}</div>
+        </div>
+      `;
+    }).join('');
 
     $('#results').html(resultsHtml);
   }
