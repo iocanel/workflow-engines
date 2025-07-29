@@ -1,5 +1,7 @@
 # Workflow Engines Explorer
 
+![Screenshot](assets/screenshot.png)
+
 **Multidimensional categorization of Workflow Engines**
 
 A faceted search tool for exploring workflow engines across philosophical and technical dimensions. 
