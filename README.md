@@ -1,10 +1,10 @@
-# Workflow Engines Explorer
+# Workflow Engines
+
+**A multidimensional categorization of Workflow Engines**
 
 [![Screenshot](assets/screenshot.png)](https://iocanel.com/workflow-engines)
 
 *To use the live application go to: https://iocanel.com/workflow-engines/*
-
-**Multidimensional categorization of Workflow Engines**
 
 A faceted search tool for exploring workflow engines across philosophical and technical dimensions. 
 Traditional attempts like *awesome-workflow-engines* that present engines in simple lists make it hard to explore multiple aspects of the engines. 
