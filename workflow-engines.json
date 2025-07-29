@@ -145,5 +145,12 @@
     "icon": "icons/kubeflow.png",
     "description": "A platform for building and deploying portable, scalable machine learning (ML) workflows based on Docker containers.",
     "tags": ["Data", "DAG", "Machine Learning", "Code-as-workflow", "Kubernetes-native", "Container", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "Spring Integration",
+    "url": "https://spring.io/projects/spring-integration",
+    "icon": "icons/spring-integration.png",
+    "description": "A lightweight messaging framework that enables the creation of enterprise integration solutions built on the Spring Framework, supporting Enterprise Integration Patterns.",
+    "tags": ["Integration", "Code flows", "Integration", "Code-as-workflow", "Ephemeral", "OpenSource", "Library"]
   }
 ]
