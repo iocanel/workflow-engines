@@ -1,0 +1,78 @@
+name: 🐛 General Issue
+description: Report a bug, point an error, suggest an improvement, or ask a question
+title: "[ISSUE] "
+labels: ["triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing to the Workflow Engines Explorer! Please provide details about your issue or suggestion.
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Issue Type
+      description: What type of issue are you reporting?
+      options:
+        - Bug Report (Something is broken or not working)
+        - Feature Request (New functionality suggestion)
+        - Engine Update (Existing engine needs updates)
+        - Categorization Issue (Engine is miscategorized)
+        - Documentation (Docs need improvement)
+        - Question (General question or clarification)
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Provide a clear and detailed description of the issue or suggestion
+      placeholder: "Describe the issue, expected behavior, or suggestion..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to Reproduce (for bugs)
+      description: If reporting a bug, provide step-by-step instructions
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: false
+
+  - type: input
+    id: browser_environment
+    attributes:
+      label: Browser/Environment (for bugs)
+      description: Browser and version, operating system
+      placeholder: "Chrome 120, Windows 11"
+    validations:
+      required: false
+
+  - type: textarea
+    id: engine_details
+    attributes:
+      label: Engine Details (for engine-related issues)
+      description: If this relates to a specific workflow engine, provide details
+      placeholder: "Engine name, what needs to be updated/corrected..."
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Screenshots, links, or any other relevant information
+      placeholder: "Any additional details..."
+
+  - type: checkboxes
+    id: acknowledgment
+    attributes:
+      label: Acknowledgment
+      options:
+        - label: I have searched existing issues to avoid duplicates
+          required: true

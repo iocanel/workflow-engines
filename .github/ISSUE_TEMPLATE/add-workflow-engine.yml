@@ -1,0 +1,78 @@
+name: 🚀 Add New Workflow Engine
+description: Suggest a new workflow engine
+title: "[NEW ENGINE] Add [Engine Name]"
+labels: ["enhancement", "new-engine"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for suggesting a new workflow engine! Please fill out the information below to help us categorize it properly across our multidimensional framework.
+
+  - type: input
+    id: engine_name
+    attributes:
+      label: Engine Name
+      description: The official name of the workflow engine
+      placeholder: "e.g., Apache Airflow, Temporal, etc."
+    validations:
+      required: true
+
+  - type: input
+    id: engine_url
+    attributes:
+      label: Official Website URL
+      description: Link to the engine's main website or documentation
+      placeholder: "https://example.com"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Brief description highlighting key characteristics, use cases, and what makes this engine unique (1-2 sentences)
+      placeholder: "A brief, informative description of the workflow engine..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: tags
+    attributes:
+      label: Tags
+      description: |
+        List relevant tags for categorization, separated by commas.
+      placeholder: "Event, data, Process, Integration, Automation etc."
+    validations:
+      required: true
+
+  - type: input
+    id: icon_suggestion
+    attributes:
+      label: Icon/Logo
+      description: Link to official logo/icon (optional - we can source this)
+      placeholder: "https://example.com/logo.png"
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: |
+        Any additional information, clarifications, or special considerations:
+        - If you selected "Other" in any category, please specify
+        - Notable features or unique characteristics
+        - Why this engine should be included
+        - Any categorization uncertainties
+      placeholder: "Additional details..."
+
+  - type: checkboxes
+    id: contribution_agreement
+    attributes:
+      label: Contribution Guidelines
+      description: Please confirm you understand our contribution process
+      options:
+        - label: I have checked that this engine is not already included in the explorer
+          required: true
+        - label: I understand this suggestion will be reviewed for accuracy and fit
+          required: true
+        - label: I am willing to help verify the categorization if needed
+          required: false

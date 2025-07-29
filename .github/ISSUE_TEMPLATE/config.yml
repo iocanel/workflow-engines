@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 Contributing Guidelines
+    url: https://github.com/iocanel/workflow-engines/blob/main/CONTRIBUTING.md
+    about: Read our detailed contribution guidelines
+  - name: 🔄 Pull Request for Engine Addition
+    url: https://github.com/iocanel/workflow-engines/compare
+    about: If you're ready to add an engine yourself, create a pull request directly
