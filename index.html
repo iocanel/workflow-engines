@@ -109,6 +109,10 @@
     .result-item .field strong {
       color: #555;
     }
+    .tag {
+      color: #999;
+      font-size: 12px;
+    }
     .count {
       color: #666;
       font-size: 11px;
@@ -400,33 +404,15 @@
       });
     });
 
-    const resultsHtml = filteredData.map(item => {
-      // Extract tags by category for display
-      const ontologicalTags = item.tags ? item.tags.filter(tag => categorizations.ontological.includes(tag)) : [];
-      const architecturalTags = item.tags ? item.tags.filter(tag => categorizations.architectural.includes(tag)) : [];
-      const teleologicalTags = item.tags ? item.tags.filter(tag => categorizations.teleological.includes(tag)) : [];
-      const structuralTags = item.tags ? item.tags.filter(tag => categorizations.structural.includes(tag)) : [];
-      const otherTags = item.tags ? item.tags.filter(tag => 
-        !categorizations.ontological.includes(tag) &&
-        !categorizations.architectural.includes(tag) &&
-        !categorizations.teleological.includes(tag) &&
-        !categorizations.structural.includes(tag)
-      ) : [];
-
-      return `
-        <div class="result-item">
-          <h4>
-            <img src="${item.icon}" alt="${item.name} icon" class="engine-icon">
-            <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a>
-          </h4>
-          <div class="field"><strong>Ontological:</strong> ${ontologicalTags.join(', ')}</div>
-          <div class="field"><strong>Architectural:</strong> ${architecturalTags.join(', ')}</div>
-          <div class="field"><strong>Teleological:</strong> ${teleologicalTags.join(', ')}</div>
-          <div class="field"><strong>Structural:</strong> ${structuralTags.join(', ')}</div>
-          <div class="field"><strong>Other:</strong> ${otherTags.join(', ')}</div>
-        </div>
-      `;
-    }).join('');
+    const resultsHtml = filteredData.map(item => `
+      <div class="result-item">
+        <h4>
+          <img src="${item.icon}" alt="${item.name} icon" class="engine-icon">
+          <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a>
+        </h4>
+        <div class="field"><strong>Tags:</strong> <span class="tag">${item.tags ? item.tags.map(tag => '#' + tag.toLowerCase()).join(' ') : ''}</span></div>
+      </div>
+    `).join('');
 
     $('#results').html(resultsHtml);
   }
