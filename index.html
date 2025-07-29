@@ -113,6 +113,27 @@
       color: #999;
       font-size: 12px;
     }
+    .clickable-tag {
+      color: #666;
+      font-size: 12px;
+      cursor: pointer;
+      padding: 2px 4px;
+      margin: 1px;
+      border-radius: 3px;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      display: inline-block;
+      transition: all 0.2s ease;
+    }
+    .clickable-tag:hover {
+      background-color: #e8e8e8;
+      border-color: #ccc;
+    }
+    .clickable-tag.active {
+      background-color: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
     .count {
       color: #666;
       font-size: 11px;
@@ -173,7 +194,7 @@
     ontological: ["Event", "Process", "Data", "Integration", "Automation"],
     architectural: ["Log", "State-machine", "DAG", "Code flows"],
     teleological: ["Microservice orchestration", "Business process automation", "Data Pipelines", "Integration", "CI/CD", "Machine Learning"],
-    structural: ["Code-as-workflow", "DSL", "Graph (DAG)", "YAML", "Node flows", "Rule automation", "JSON", "Visual workflow design"],
+    structural: ["Code-as-workflow", "DSL", "Graph (DAG)", "YAML", "JSON", "Visual"],
     licensing: ["Free", "OpenSource", "Source-Available", "Proprietary"],
     operational: ["Managed Service", "Self Hosted", "Library"]
   };
@@ -184,42 +205,42 @@
       "url": "https://temporal.io",
       "icon": "icons/temporal.png",
       "description": "A microservice orchestration platform that guarantees workflow completion even through failures, using event sourcing and deterministic execution.",
-      "tags": ["Event", "Log", "Microservice orchestration", "Code-as-workflow", "Persistent", "Replayable", "OpenSource", "Self Hosted"]
+      "tags": ["Event", "Log", "Microservice orchestration", "Code-as-workflow", "Persistent", "Replayable", "Event-driven", "OpenSource", "Self Hosted"]
     },
     {
       "name": "Airflow",
       "url": "https://airflow.apache.org",
       "icon": "icons/airflow.png",
       "description": "A platform to programmatically author, schedule and monitor workflows, representing workflows as directed acyclic graphs (DAGs) of tasks.",
-      "tags": ["Data", "DAG", "Data Pipelines", "Graph (DAG)", "Ephemeral", "OpenSource", "Self Hosted"]
+      "tags": ["Data", "DAG", "Data Pipelines", "Graph (DAG)", "Ephemeral", "Container", "OpenSource", "Self Hosted"]
     },
     {
       "name": "Camunda (Zeebe)",
       "url": "https://camunda.com",
       "icon": "icons/camunda.png",
       "description": "A cloud-native workflow engine for microservices orchestration, designed for high performance and horizontal scalability with BPMN 2.0 support.",
-      "tags": ["Process", "State-machine", "Business process automation", "DSL", "Persistent", "Microservice orchestration", "Source-Available", "Self Hosted"]
+      "tags": ["Process", "State-machine", "Business process automation", "DSL", "Persistent", "Microservice orchestration", "Cloud-native", "Source-Available", "Self Hosted"]
     },
     {
       "name": "Apache Camel",
       "url": "https://camel.apache.org",
       "icon": "icons/camel.png",
       "description": "A versatile open-source integration framework that empowers you to quickly connect various systems consuming or producing data using Enterprise Integration Patterns.",
-      "tags": ["Integration", "Code flows", "DSL", "Ephemeral", "Mutable", "OpenSource", "Library"]
+      "tags": ["Integration", "Code flows", "DSL", "Ephemeral", "OpenSource", "Library", "Code-as-workflow"]
     },
     {
       "name": "Dagster",
       "url": "https://dagster.io",
       "icon": "icons/dagster.png",
       "description": "A data orchestrator for machine learning, analytics, and ETL that focuses on developer productivity, data quality, and operational simplicity.",
-      "tags": ["Data", "DAG", "Data Pipelines", "Code-as-workflow", "Persistent", "Type-aware", "Source-Available", "Self Hosted"]
+      "tags": ["Data", "DAG", "Data Pipelines", "Code-as-workflow", "Persistent", "Source-Available", "Self Hosted"]
     },
     {
       "name": "Prefect",
       "url": "https://prefect.io",
       "icon": "icons/prefect.png",
       "description": "A workflow orchestration tool empowering developers to build, observe, and react to data pipelines with Python code that's testable, portable, and easy to maintain.",
-      "tags": ["Data", "Code flows", "Data Pipelines", "Code-as-workflow", "Ephemeral", "Dynamic orchestration", "Source-Available", "Self Hosted"]
+      "tags": ["Data", "Code flows", "Data Pipelines", "Code-as-workflow", "Ephemeral", "Source-Available", "Self Hosted"]
     },
     {
       "name": "Luigi",
@@ -247,7 +268,7 @@
       "url": "https://kestra.io",
       "icon": "icons/kestra.png",
       "description": "An infinitely scalable orchestration and scheduling platform, creating, running, scheduling, and monitoring millions of complex pipelines.",
-      "tags": ["Data", "DAG", "Data Pipelines", "YAML", "Persistent", "Event-driven", "Source-Available", "Self Hosted"]
+      "tags": ["Data", "DAG", "Data Pipelines", "YAML", "Persistent", "Event-driven", "Kubernetes-native", "Replayable", "Source-Available", "Self Hosted"]
     },
     {
       "name": "Flowable",
@@ -275,56 +296,56 @@
       "url": "https://boomi.com",
       "icon": "icons/boomi.png",
       "description": "A cloud-native, unified, open, and intelligent platform that connects everything and everyone to accelerate business outcomes.",
-      "tags": ["Integration", "Code flows", "DSL", "Cloud-native", "Visual workflow design", "Proprietary", "Managed Service"]
+      "tags": ["Integration", "Code flows", "DSL", "Cloud-native", "Visual", "Event-driven", "Proprietary", "Managed Service"]
     },
     {
       "name": "n8n",
       "url": "https://n8n.io",
       "icon": "icons/n8n.png",
       "description": "A free and source-available workflow automation tool designed for technical people. Easily automate tasks across different services with a visual interface.",
-      "tags": ["Automation", "Code flows", "Business process automation", "Node flows", "Event-driven", "Visual workflow design", "Source-Available", "Self Hosted"]
+      "tags": ["Automation", "Code flows", "Business process automation", "Event-driven", "Visual", "Source-Available", "Self Hosted"]
     },
     {
       "name": "Make",
       "url": "https://make.com",
       "icon": "icons/make.png",
       "description": "A visual platform that lets you design, build, and automate anything from simple tasks to complex workflows in minutes.",
-      "tags": ["Automation", "Code flows", "Business process automation", "Node flows", "Event-driven", "Cloud-native", "Visual workflow design", "Proprietary", "Managed Service"]
+      "tags": ["Automation", "Code flows", "Business process automation", "Event-driven", "Cloud-native", "Visual", "Ephemeral", "Proprietary", "Managed Service"]
     },
     {
       "name": "Zapier",
       "url": "https://zapier.com",
       "icon": "icons/zapier.png",
       "description": "Easy automation for busy people. Zapier moves info between your web apps automatically, so you can focus on your most important work.",
-      "tags": ["Automation", "Code flows", "Business process automation", "Rule automation", "Event-driven", "Cloud-native", "Trigger-action flows", "Proprietary", "Managed Service"]
+      "tags": ["Automation", "Code flows", "Business process automation", "Event-driven", "Cloud-native", "Ephemeral", "Proprietary", "Managed Service"]
     },
     {
       "name": "AWS Step Functions",
       "url": "https://aws.amazon.com/step-functions/",
       "icon": "icons/aws-step-functions.png",
       "description": "A visual workflow service that helps developers use AWS services to build distributed applications, automate processes, orchestrate microservices, and create data and machine learning pipelines.",
-      "tags": ["Event", "State-machine", "Serverless", "JSON", "Cloud-native", "Event-driven", "Proprietary", "Managed Service"]
+      "tags": ["Event", "State-machine", "Serverless", "JSON", "Cloud-native", "Event-driven", "Persistent", "Replayable", "Proprietary", "Managed Service"]
     },
     {
       "name": "Azure Logic Apps",
       "url": "https://azure.microsoft.com/en-us/services/logic-apps/",
       "icon": "icons/azure-logic-apps.png",
       "description": "Simplify and scale integration and workflow scenarios in the cloud. Quickly build highly scalable integration solutions for your enterprise and B2B scenarios.",
-      "tags": ["Process", "Code flows", "Integration", "Visual workflow design", "Cloud-native", "Event-driven", "Proprietary", "Managed Service"]
+      "tags": ["Process", "Code flows", "Integration", "Visual", "Cloud-native", "Event-driven", "Serverless", "Persistent", "Proprietary", "Managed Service"]
     },
     {
       "name": "Google Cloud Workflows",
       "url": "https://cloud.google.com/workflows",
       "icon": "icons/google-cloud-workflows.png",
       "description": "Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.",
-      "tags": ["Event", "Code flows", "Serverless", "YAML", "Cloud-native", "Event-driven", "Proprietary", "Managed Service"]
+      "tags": ["Event", "Code flows", "Serverless", "YAML", "Cloud-native", "Event-driven", "Ephemeral", "Proprietary", "Managed Service"]
     },
     {
       "name": "Kubeflow Pipelines",
       "url": "https://www.kubeflow.org/docs/components/pipelines/",
       "icon": "icons/kubeflow.png",
       "description": "A platform for building and deploying portable, scalable machine learning (ML) workflows based on Docker containers.",
-      "tags": ["Data", "DAG", "Machine Learning", "Code-as-workflow", "Kubernetes-native", "Experiment tracking", "OpenSource", "Self Hosted"]
+      "tags": ["Data", "DAG", "Machine Learning", "Code-as-workflow", "Kubernetes-native", "Container", "OpenSource", "Self Hosted"]
     }
   ];
 
@@ -452,7 +473,10 @@
           <a href="${item.url}" target="_blank" rel="noopener noreferrer">${item.name}</a>
         </h4>
         <p>${item.description || ''}</p>
-        <div class="field"><strong>Tags:</strong> <span class="tag">${item.tags ? item.tags.map(tag => '#' + tag.toLowerCase()).join(' ') : ''}</span></div>
+        <div class="field"><strong>Tags:</strong> ${item.tags ? item.tags.map(tag => {
+          const isActive = Object.values(activeFilters).flat().includes(tag) ? 'active' : '';
+          return `<span class="clickable-tag ${isActive}" onclick="toggleTag('${tag}')">#${tag.toLowerCase()}</span>`;
+        }).join(' ') : ''}</div>
       </div>
     `).join('');
 
@@ -471,6 +495,31 @@
       items.classList.add('collapsed');
       icon.classList.add('collapsed');
       items.style.maxHeight = '0px';
+    }
+  }
+
+  function toggleTag(tagValue) {
+    // Find which category this tag belongs to
+    let targetField = null;
+    
+    // Check defined categories first
+    for (const [field, tags] of Object.entries(categorizations)) {
+      if (tags.includes(tagValue)) {
+        targetField = field;
+        break;
+      }
+    }
+    
+    // If not found in defined categories, it belongs to "other"
+    if (!targetField) {
+      targetField = 'other';
+    }
+    
+    // Find the corresponding checkbox and toggle it
+    const checkbox = $(`input[type="checkbox"][value="${tagValue}"][data-field="${targetField}"]`);
+    if (checkbox.length > 0) {
+      checkbox.prop('checked', !checkbox.prop('checked'));
+      updateFilters();
     }
   }
 
