@@ -1,0 +1,149 @@
+[
+  {
+    "name": "Temporal",
+    "url": "https://temporal.io",
+    "icon": "icons/temporal.png",
+    "description": "A microservice orchestration platform that guarantees workflow completion even through failures, using event sourcing and deterministic execution.",
+    "tags": ["Event", "Log", "Microservice orchestration", "Code-as-workflow", "Persistent", "Replayable", "Event-driven", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "Airflow",
+    "url": "https://airflow.apache.org",
+    "icon": "icons/airflow.png",
+    "description": "A platform to programmatically author, schedule and monitor workflows, representing workflows as directed acyclic graphs (DAGs) of tasks.",
+    "tags": ["Data", "DAG", "Data Pipelines", "Graph (DAG)", "Ephemeral", "Container", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "Camunda (Zeebe)",
+    "url": "https://camunda.com",
+    "icon": "icons/camunda.png",
+    "description": "A cloud-native workflow engine for microservices orchestration, designed for high performance and horizontal scalability with BPMN 2.0 support.",
+    "tags": ["Process", "State-machine", "Business process automation", "DSL", "Persistent", "Microservice orchestration", "Cloud-native", "Source-Available", "Self Hosted"]
+  },
+  {
+    "name": "Apache Camel",
+    "url": "https://camel.apache.org",
+    "icon": "icons/camel.png",
+    "description": "A versatile open-source integration framework that empowers you to quickly connect various systems consuming or producing data using Enterprise Integration Patterns.",
+    "tags": ["Integration", "Code flows", "DSL", "Ephemeral", "OpenSource", "Library", "Code-as-workflow"]
+  },
+  {
+    "name": "Dagster",
+    "url": "https://dagster.io",
+    "icon": "icons/dagster.png",
+    "description": "A data orchestrator for machine learning, analytics, and ETL that focuses on developer productivity, data quality, and operational simplicity.",
+    "tags": ["Data", "DAG", "Data Pipelines", "Code-as-workflow", "Persistent", "Source-Available", "Self Hosted"]
+  },
+  {
+    "name": "Prefect",
+    "url": "https://prefect.io",
+    "icon": "icons/prefect.png",
+    "description": "A workflow orchestration tool empowering developers to build, observe, and react to data pipelines with Python code that's testable, portable, and easy to maintain.",
+    "tags": ["Data", "Code flows", "Data Pipelines", "Code-as-workflow", "Ephemeral", "Source-Available", "Self Hosted"]
+  },
+  {
+    "name": "Luigi",
+    "url": "https://github.com/spotify/luigi",
+    "icon": "icons/luigi.png",
+    "description": "A Python module that helps you build complex pipelines of batch jobs with dependency resolution, workflow management, visualization etc.",
+    "tags": ["Data", "DAG", "Data Pipelines", "Graph (DAG)", "Ephemeral", "OpenSource", "Library"]
+  },
+  {
+    "name": "Argo Workflows",
+    "url": "https://argoproj.github.io/workflows",
+    "icon": "icons/argo.png",
+    "description": "An open source container-native workflow engine for orchestrating parallel jobs on Kubernetes, implemented as a Kubernetes CRD.",
+    "tags": ["Process", "DAG", "CI/CD", "YAML", "Ephemeral", "Kubernetes-native", "Container", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "Tekton",
+    "url": "https://tekton.dev",
+    "icon": "icons/tekton.png",
+    "description": "A powerful and flexible open-source framework for creating CI/CD systems, allowing developers to build, test, and deploy across cloud providers and on-premise systems.",
+    "tags": ["Process", "Code flows", "CI/CD", "YAML", "Ephemeral", "Kubernetes-native", "Pipeline-as-code", "Container", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "Kestra",
+    "url": "https://kestra.io",
+    "icon": "icons/kestra.png",
+    "description": "An infinitely scalable orchestration and scheduling platform, creating, running, scheduling, and monitoring millions of complex pipelines.",
+    "tags": ["Data", "DAG", "Data Pipelines", "YAML", "Persistent", "Event-driven", "Kubernetes-native", "Replayable", "Source-Available", "Self Hosted"]
+  },
+  {
+    "name": "Flowable",
+    "url": "https://flowable.com",
+    "icon": "icons/flowable.png",
+    "description": "A compact and highly efficient workflow and Business Process Management (BPM) platform for developers, system admins and business users.",
+    "tags": ["Process", "DAG", "Business process automation", "DSL", "Persistent", "State-machine", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "Activiti",
+    "url": "https://www.activiti.org",
+    "icon": "icons/activiti.png",
+    "description": "A light-weight workflow and Business Process Management (BPM) Platform targeted at business people, developers and system admins.",
+    "tags": ["Process", "DAG", "Business process automation", "DSL", "Persistent", "State-machine", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "jBPM",
+    "url": "https://www.jbpm.org",
+    "icon": "icons/jbpm.png",
+    "description": "A flexible Business Process Management (BPM) suite that allows you to model your business goals by describing the steps that need to be executed to achieve those goals.",
+    "tags": ["Process", "DAG", "Business process automation", "DSL", "Persistent", "State-machine", "OpenSource", "Self Hosted"]
+  },
+  {
+    "name": "Boomi",
+    "url": "https://boomi.com",
+    "icon": "icons/boomi.png",
+    "description": "A cloud-native, unified, open, and intelligent platform that connects everything and everyone to accelerate business outcomes.",
+    "tags": ["Integration", "Code flows", "DSL", "Cloud-native", "Visual", "Event-driven", "Proprietary", "Managed Service"]
+  },
+  {
+    "name": "n8n",
+    "url": "https://n8n.io",
+    "icon": "icons/n8n.png",
+    "description": "A free and source-available workflow automation tool designed for technical people. Easily automate tasks across different services with a visual interface.",
+    "tags": ["Automation", "Code flows", "Business process automation", "Event-driven", "Visual", "Source-Available", "Self Hosted"]
+  },
+  {
+    "name": "Make",
+    "url": "https://make.com",
+    "icon": "icons/make.png",
+    "description": "A visual platform that lets you design, build, and automate anything from simple tasks to complex workflows in minutes.",
+    "tags": ["Automation", "Code flows", "Business process automation", "Event-driven", "Cloud-native", "Visual", "Ephemeral", "Proprietary", "Managed Service"]
+  },
+  {
+    "name": "Zapier",
+    "url": "https://zapier.com",
+    "icon": "icons/zapier.png",
+    "description": "Easy automation for busy people. Zapier moves info between your web apps automatically, so you can focus on your most important work.",
+    "tags": ["Automation", "Code flows", "Business process automation", "Event-driven", "Cloud-native", "Ephemeral", "Proprietary", "Managed Service"]
+  },
+  {
+    "name": "AWS Step Functions",
+    "url": "https://aws.amazon.com/step-functions/",
+    "icon": "icons/aws-step-functions.png",
+    "description": "A visual workflow service that helps developers use AWS services to build distributed applications, automate processes, orchestrate microservices, and create data and machine learning pipelines.",
+    "tags": ["Event", "State-machine", "Serverless", "JSON", "Cloud-native", "Event-driven", "Persistent", "Replayable", "Proprietary", "Managed Service"]
+  },
+  {
+    "name": "Azure Logic Apps",
+    "url": "https://azure.microsoft.com/en-us/services/logic-apps/",
+    "icon": "icons/azure-logic-apps.png",
+    "description": "Simplify and scale integration and workflow scenarios in the cloud. Quickly build highly scalable integration solutions for your enterprise and B2B scenarios.",
+    "tags": ["Process", "Code flows", "Integration", "Visual", "Cloud-native", "Event-driven", "Serverless", "Persistent", "Proprietary", "Managed Service"]
+  },
+  {
+    "name": "Google Cloud Workflows",
+    "url": "https://cloud.google.com/workflows",
+    "icon": "icons/google-cloud-workflows.png",
+    "description": "Orchestrate and automate Google Cloud and HTTP-based API services with serverless workflows.",
+    "tags": ["Event", "Code flows", "Serverless", "YAML", "Cloud-native", "Event-driven", "Ephemeral", "Proprietary", "Managed Service"]
+  },
+  {
+    "name": "Kubeflow Pipelines",
+    "url": "https://www.kubeflow.org/docs/components/pipelines/",
+    "icon": "icons/kubeflow.png",
+    "description": "A platform for building and deploying portable, scalable machine learning (ML) workflows based on Docker containers.",
+    "tags": ["Data", "DAG", "Machine Learning", "Code-as-workflow", "Kubernetes-native", "Container", "OpenSource", "Self Hosted"]
+  }
+]

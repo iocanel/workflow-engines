@@ -231,7 +231,7 @@
     operational: ["Managed Service", "Self Hosted", "Library"]
   };
 
-  const workflowData = [
+  const embeddedWorkflowData = [
     {
       "name": "Temporal",
       "url": "https://temporal.io",
@@ -381,6 +381,24 @@
     }
   ];
 
+  // Try to load fresh data from JSON, fallback to embedded data
+  async function loadWorkflowData() {
+    try {
+      const response = await fetch('workflow-engines.json');
+      if (response.ok) {
+        const jsonData = await response.json();
+        console.log(`Loaded ${jsonData.length} workflow engines from JSON file`);
+        return jsonData;
+      }
+    } catch (error) {
+      console.log('JSON file not accessible, using embedded data');
+    }
+    
+    // Fallback to embedded data
+    console.log(`Using embedded data (${embeddedWorkflowData.length} workflow engines)`);
+    return embeddedWorkflowData;
+  }
+
   const facetConfig = [
     {field: 'ontological', display: 'Ontological', description: 'What kind of thing is the engine managing?'},
     {field: 'architectural', display: 'Architectural', description: 'What are the core architectural elements of the engine?'},
@@ -391,6 +409,7 @@
     {field: 'other', display: 'Other', description: 'What other traits does the engine have?'}
   ];
 
+  let workflowData = []; // Will be populated with data from JSON or embedded fallback
   let activeFilters = {};
   let searchQuery = '';
 
@@ -588,7 +607,11 @@
   }
 
   // Initialize
-  $(document).ready(function() {
+  $(document).ready(async function() {
+    // Load workflow data (from JSON or embedded fallback)
+    workflowData = await loadWorkflowData();
+    
+    // Initialize the interface
     buildFacets();
     displayResults();
     
