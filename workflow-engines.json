@@ -170,5 +170,12 @@
       "Integration",
       "Event-driven"
     ]
+  },
+  {
+    "name": "Kogito",
+    "url": "https://kogito.kie.org/",
+    "icon": "icons/kogito.png",
+    "description": "A cloud-native business automation platform for building intelligent applications that adapts to your business domain rather than forcing applications to adapt to the tool.",
+    "tags": ["Process", "Business process automation", "Code-as-workflow", "Cloud-native", "Kubernetes-native", "OpenSource", "Self Hosted"]
   }
 ]
