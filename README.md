@@ -1,6 +1,8 @@
 # Workflow Engines Explorer
 
-![Screenshot](assets/screenshot.png)
+[![Screenshot](assets/screenshot.png)](https://iocanel.com/workflow-engines)
+
+*To use the live application go to: https://iocanel.com/workflow-engines/*
 
 **Multidimensional categorization of Workflow Engines**
 
