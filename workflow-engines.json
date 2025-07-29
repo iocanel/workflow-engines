@@ -18,7 +18,7 @@
     "url": "https://camunda.com",
     "icon": "icons/camunda.png",
     "description": "A cloud-native workflow engine for microservices orchestration, designed for high performance and horizontal scalability with BPMN 2.0 support.",
-    "tags": ["Process", "State-machine", "Business process automation", "DSL", "Persistent", "Microservice orchestration", "Cloud-native", "Source-Available", "Self Hosted"]
+    "tags": ["Process", "Log", "State-machine", "Business process automation", "DSL", "Persistent", "Microservice orchestration", "Cloud-native", "Source-Available", "Self Hosted"]
   },
   {
     "name": "Apache Camel",
