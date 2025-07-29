@@ -92,11 +92,14 @@ jobs:
             // Generate icon path (default pattern)
             const iconPath = `icons/${engineName.toLowerCase().replace(/[^a-z0-9]/g, '-')}.png`;
             
+            // Clean description by removing control characters that could break JSON
+            const cleanDescription = description.replace(/[\u0000-\u001F\u007F-\u009F]/g, ' ').trim();
+            
             const engineData = {
               name: engineName,
               url: engineUrl,
               icon: iconPath,
-              description: description,
+              description: cleanDescription,
               tags: tagsArray
             };
             
@@ -116,6 +119,8 @@ jobs:
 
       - name: Update workflow-engines.json
         uses: actions/github-script@v7
+        env:
+          ENGINE_DATA: ${{ steps.parse.outputs.engine-data }}
         with:
           script: |
             const fs = require('fs');
@@ -124,8 +129,8 @@ jobs:
             // Read the original file as text to preserve formatting
             const originalContent = fs.readFileSync(path, 'utf8');
             
-            // Parse new engine data
-            const newEngine = JSON.parse('${{ steps.parse.outputs.engine-data }}');
+            // Parse new engine data from environment variable to avoid interpolation issues
+            const newEngine = JSON.parse(process.env.ENGINE_DATA);
             
             // Convert new engine to JSON string with 2-space indentation
             const newEngineJson = JSON.stringify(newEngine, null, 2);
