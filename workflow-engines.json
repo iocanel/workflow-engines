@@ -153,4 +153,14 @@
     "description": "A lightweight messaging framework that enables the creation of enterprise integration solutions built on the Spring Framework, supporting Enterprise Integration Patterns.",
     "tags": ["Integration", "Code flows", "Integration", "Code-as-workflow", "Ephemeral", "OpenSource", "Library"]
   }
+,
+  {
+    "name": "Test Engine",
+    "url": "https://test-engine.io",
+    "icon": "icons/test-engine.png",
+    "description": "This is a simple test engine.",
+    "tags": [
+      "Testing"
+    ]
+  }
 ]
