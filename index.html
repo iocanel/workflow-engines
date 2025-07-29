@@ -233,6 +233,112 @@
 
   // Load workflow data from JSON file
   async function loadWorkflowData() {
+    // Check if page is opened via file:// protocol
+    if (window.location.protocol === 'file:') {
+      return new Promise((resolve) => {
+        const fileLoaderHtml = `
+          <div style="padding: 30px; text-align: center; color: #666; max-width: 700px; margin: 0 auto;">
+            <h2 style="color: #2c5aa0; margin-bottom: 20px;">📁 Load Workflow Engines Data</h2>
+            <p style="margin-bottom: 30px; font-size: 16px;">This page was opened from a local file. Choose an option below:</p>
+            
+            <div style="background: #f0f8ff; padding: 25px; border-radius: 10px; margin: 25px 0; border: 2px solid #2c5aa0;">
+              <h3 style="margin-top: 0; color: #2c5aa0;">Option 1: Load Data File</h3>
+              <button id="loadFileBtn" style="
+                background: #2c5aa0; 
+                color: white; 
+                border: none; 
+                padding: 15px 25px; 
+                border-radius: 8px; 
+                cursor: pointer; 
+                font-size: 18px;
+                font-weight: bold;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+                transition: background-color 0.3s;
+              ">
+                📄 Select workflow-engines.json file
+              </button>
+              <input type="file" id="fileInput" accept=".json" style="display: none;">
+              <p style="font-size: 14px; color: #666; margin-top: 15px;">
+                Click the button above to browse and select the workflow-engines.json file
+              </p>
+            </div>
+            
+            <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 25px 0; text-align: left; border: 1px solid #ddd;">
+              <h3 style="margin-top: 0; color: #333;">Option 2: Use HTTP Server (Recommended)</h3>
+              <ol style="margin: 10px 0; padding-left: 20px;">
+                <li>Open terminal in this project folder</li>
+                <li>Run: <code style="background: #e9ecef; padding: 4px 8px; border-radius: 4px; font-family: monospace;">python3 -m http.server 8000</code></li>
+                <li>Open: <a href="http://localhost:8000" style="color: #2c5aa0; font-weight: bold;">http://localhost:8000</a></li>
+              </ol>
+            </div>
+          </div>
+        `;
+        
+        // Insert the HTML immediately
+        document.getElementById('results').innerHTML = fileLoaderHtml;
+        
+        // Set up file loading functionality immediately after DOM insertion
+        const loadFileBtn = document.getElementById('loadFileBtn');
+        const fileInput = document.getElementById('fileInput');
+        
+        console.log('File loader elements:', { loadFileBtn, fileInput });
+        
+        if (loadFileBtn && fileInput) {
+          // Add hover effect
+          loadFileBtn.addEventListener('mouseenter', function() {
+            this.style.backgroundColor = '#1e4a8c';
+          });
+          loadFileBtn.addEventListener('mouseleave', function() {
+            this.style.backgroundColor = '#2c5aa0';
+          });
+          
+          loadFileBtn.addEventListener('click', function() {
+            console.log('Load file button clicked');
+            fileInput.click();
+          });
+          
+          fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            console.log('File selected:', file);
+            
+            if (file && file.name.endsWith('.json')) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                try {
+                  const jsonData = JSON.parse(e.target.result);
+                  console.log(`Loaded ${jsonData.length} workflow engines from selected file`);
+                  
+                  // Update global workflowData
+                  workflowData = jsonData;
+                  
+                  // Clear the file loader interface
+                  document.getElementById('results').innerHTML = '';
+                  
+                  // Initialize the interface now that we have data
+                  buildFacets();
+                  displayResults();
+                  
+                  // Resolve with the loaded data
+                  resolve(jsonData);
+                  
+                } catch (error) {
+                  console.error('Error parsing JSON file:', error);
+                  alert('Error: Invalid JSON file. Please select a valid workflow-engines.json file.');
+                }
+              };
+              reader.readAsText(file);
+            } else {
+              alert('Please select a valid JSON file.');
+            }
+          });
+          
+          console.log('File loader setup complete');
+        } else {
+          console.error('Could not find file loader elements');
+        }
+      });
+    }
+
     try {
       const response = await fetch('workflow-engines.json');
       if (!response.ok) {
@@ -244,7 +350,16 @@
     } catch (error) {
       console.error('Error loading workflow data:', error);
       // Show error message to user
-      $('#results').html('<div style="padding: 20px; text-align: center; color: #666;">Error loading workflow engines data. Please ensure you are running a local HTTP server.<br><br>Run: <code>python3 -m http.server 8000</code></div>');
+      $('#results').html(`
+        <div style="padding: 20px; text-align: center; color: #666;">
+          <h3 style="color: #dc3545; margin-bottom: 15px;">❌ Failed to Load Data</h3>
+          <p>Error loading workflow engines data from JSON file.</p>
+          <p style="font-size: 14px; margin-top: 15px;">
+            Make sure you're running an HTTP server:<br>
+            <code style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px;">python3 -m http.server 8000</code>
+          </p>
+        </div>
+      `);
       return [];
     }
   }
@@ -458,12 +573,14 @@
 
   // Initialize
   $(document).ready(async function() {
-    // Load workflow data (from JSON or embedded fallback)
+    // Load workflow data (from JSON or file picker)
     workflowData = await loadWorkflowData();
     
-    // Initialize the interface
-    buildFacets();
-    displayResults();
+    // Only initialize interface if we have data
+    if (workflowData && workflowData.length > 0) {
+      buildFacets();
+      displayResults();
+    }
     
     // Add search box event listener
     $('#searchBox').on('input', updateSearch);
