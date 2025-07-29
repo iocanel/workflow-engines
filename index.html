@@ -185,6 +185,9 @@
 </div>
 <div class="content">
   <h1>Workflow Engines</h1>
+  <div style="margin-bottom: 20px;">
+    <input type="text" id="searchBox" placeholder="Search workflow engines by name..." style="width: 100%; max-width: 400px; padding: 8px; border: 1px solid #ddd; border-radius: 4px; font-size: 14px;">
+  </div>
   <div id="results" class="results"></div>
 </div>
 
@@ -360,10 +363,17 @@
   ];
 
   let activeFilters = {};
+  let searchQuery = '';
 
   function buildFacets() {
-    // First, filter data based on current filters to get the base set
+    // First, filter data based on current filters and search query to get the base set
     let filteredData = workflowData.filter(item => {
+      // Check search query first
+      if (searchQuery && !item.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false;
+      }
+      
+      // Then check facet filters
       return Object.keys(activeFilters).every(field => {
         const filterValues = activeFilters[field];
         
@@ -456,6 +466,12 @@
 
   function displayResults() {
     let filteredData = workflowData.filter(item => {
+      // Check search query first
+      if (searchQuery && !item.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+        return false;
+      }
+      
+      // Then check facet filters
       return Object.keys(activeFilters).every(field => {
         const filterValues = activeFilters[field];
         
@@ -498,6 +514,12 @@
     }
   }
 
+  function updateSearch() {
+    searchQuery = $('#searchBox').val().trim();
+    buildFacets();
+    displayResults();
+  }
+
   function toggleTag(tagValue) {
     // Find which category this tag belongs to
     let targetField = null;
@@ -527,6 +549,9 @@
   $(document).ready(function() {
     buildFacets();
     displayResults();
+    
+    // Add search box event listener
+    $('#searchBox').on('input', updateSearch);
     
     // Set initial max-height for smooth transitions
     setTimeout(() => {
