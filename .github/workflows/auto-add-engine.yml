@@ -1,0 +1,268 @@
+name: Auto-create PR for New Engine
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to process'
+        required: true
+        type: number
+
+jobs:
+  create-pr:
+    # Check for new-engine label OR if it's a manual dispatch OR if the issue title contains "NEW ENGINE"
+    if: |
+      contains(github.event.issue.labels.*.name, 'new-engine') || 
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.title, '[NEW ENGINE]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get issue details
+        id: get-issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            let issue;
+            let issueNumber;
+            
+            if (context.eventName === 'workflow_dispatch') {
+              // Manual trigger - get issue by number
+              issueNumber = ${{ github.event.inputs.issue_number || 'null' }};
+              const { data } = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber
+              });
+              issue = data;
+            } else {
+              // Automatic trigger - use event payload
+              issue = context.payload.issue;
+              issueNumber = issue.number;
+            }
+            
+            core.setOutput('issue-number', issueNumber);
+            core.setOutput('issue-body', issue.body);
+            core.setOutput('issue-title', issue.title);
+            
+            return { number: issueNumber, body: issue.body, title: issue.title };
+
+      - name: Parse issue body
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueBody = '${{ steps.get-issue.outputs.issue-body }}';
+            const issueNumber = '${{ steps.get-issue.outputs.issue-number }}';
+            
+            // Parse the issue body to extract engine details
+            const parseField = (body, fieldName) => {
+              const regex = new RegExp(`### ${fieldName}\\s*\\n\\s*([\\s\\S]*?)(?=\\n### |$)`, 'i');
+              const match = body.match(regex);
+              return match ? match[1].trim() : '';
+            };
+            
+            const engineName = parseField(issueBody, 'Engine Name');
+            const engineUrl = parseField(issueBody, 'Official Website URL');
+            const description = parseField(issueBody, 'Description');
+            const tags = parseField(issueBody, 'Tags');
+            const iconSuggestion = parseField(issueBody, 'Icon/Logo');
+            
+            // Clean and process tags
+            const tagsArray = tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+            
+            // Generate icon path (default pattern)
+            const iconPath = `icons/${engineName.toLowerCase().replace(/[^a-z0-9]/g, '-')}.png`;
+            
+            const engineData = {
+              name: engineName,
+              url: engineUrl,
+              icon: iconPath,
+              description: description,
+              tags: tagsArray
+            };
+            
+            // Set outputs
+            core.setOutput('engine-name', engineName);
+            core.setOutput('engine-data', JSON.stringify(engineData));
+            core.setOutput('branch-name', `add-engine-${engineName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-${issueNumber}`);
+            core.setOutput('icon-suggestion', iconSuggestion);
+            
+            return engineData;
+
+      - name: Create new branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git checkout -b "${{ steps.parse.outputs.branch-name }}"
+
+      - name: Update workflow-engines.json
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = './workflow-engines.json';
+            
+            // Read current workflow engines
+            const currentData = JSON.parse(fs.readFileSync(path, 'utf8'));
+            
+            // Parse new engine data
+            const newEngine = JSON.parse('${{ steps.parse.outputs.engine-data }}');
+            
+            // Add new engine to the array
+            currentData.push(newEngine);
+            
+            // Sort by name for consistency
+            currentData.sort((a, b) => a.name.localeCompare(b.name));
+            
+            // Write back to file with proper formatting
+            fs.writeFileSync(path, JSON.stringify(currentData, null, 2));
+            
+            console.log(`Added ${newEngine.name} to workflow-engines.json`);
+
+      - name: Update embedded data in index.html
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = './index.html';
+            
+            // Read current HTML file
+            let htmlContent = fs.readFileSync(path, 'utf8');
+            
+            // Read the updated JSON data
+            const workflowData = JSON.parse(fs.readFileSync('./workflow-engines.json', 'utf8'));
+            
+            // Find and replace the embedded data
+            const dataStart = htmlContent.indexOf('const embeddedWorkflowData = [');
+            const dataEnd = htmlContent.indexOf('];', dataStart) + 2;
+            
+            if (dataStart !== -1 && dataEnd !== -1) {
+              const newEmbeddedData = `const embeddedWorkflowData = ${JSON.stringify(workflowData, null, 4)};`;
+              htmlContent = htmlContent.substring(0, dataStart) + newEmbeddedData + htmlContent.substring(dataEnd);
+              
+              fs.writeFileSync(path, htmlContent);
+              console.log('Updated embedded data in index.html');
+            } else {
+              console.error('Could not find embedded data section in index.html');
+            }
+
+      - name: Create icon placeholder comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const iconSuggestion = '${{ steps.parse.outputs.icon-suggestion }}';
+            const engineName = '${{ steps.parse.outputs.engine-name }}';
+            
+            let iconComment = `## 🎨 Icon needed for ${engineName}\n\n`;
+            
+            if (iconSuggestion && iconSuggestion.trim() !== '') {
+              iconComment += `Suggested icon URL: ${iconSuggestion}\n\n`;
+            }
+            
+            iconComment += `Please add a 24x24px PNG icon to \`icons/${engineName.toLowerCase().replace(/[^a-z0-9]/g, '-')}.png\` before merging.\n\n`;
+            iconComment += `If no icon is available, we can use a placeholder or source one from the official website.`;
+            
+            // Write icon comment to a file for the PR body
+            require('fs').writeFileSync('./icon-note.md', iconComment);
+
+      - name: Commit changes
+        run: |
+          git add workflow-engines.json index.html
+          git commit -m "Add ${{ steps.parse.outputs.engine-name }} workflow engine
+
+          - Added to workflow-engines.json
+          - Updated embedded data in index.html
+          - Auto-generated from issue #${{ steps.get-issue.outputs.issue-number }}"
+
+      - name: Push branch
+        run: git push origin "${{ steps.parse.outputs.branch-name }}"
+
+      - name: Create Pull Request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const iconNote = fs.readFileSync('./icon-note.md', 'utf8');
+            
+            const { data: pullRequest } = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Add ${{ steps.parse.outputs.engine-name }} workflow engine`,
+              head: '${{ steps.parse.outputs.branch-name }}',
+              base: 'main',
+              body: `## Summary
+            Auto-generated PR to add **${{ steps.parse.outputs.engine-name }}** workflow engine.
+            
+            This PR was automatically created from issue #${{ steps.get-issue.outputs.issue-number }}.
+            
+            ## Changes
+            - ✅ Added engine to \`workflow-engines.json\`
+            - ✅ Updated embedded data in \`index.html\`
+            - ⏳ Icon needs to be added (see note below)
+            
+            ${iconNote}
+            
+            ## Review Checklist
+            - [ ] Engine information is accurate
+            - [ ] Tags are properly categorized
+            - [ ] Description is clear and concise
+            - [ ] Icon has been added
+            - [ ] No duplicate engines
+            
+            Closes #${{ steps.get-issue.outputs.issue-number }}`
+            });
+            
+            // Add labels to the PR
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pullRequest.number,
+              labels: ['auto-generated', 'new-engine']
+            });
+            
+            console.log(`Created PR #${pullRequest.number}`);
+            
+            // Comment on the original issue
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.get-issue.outputs.issue-number }},
+              body: `🤖 **Auto-generated Pull Request Created!**
+              
+              I've automatically created pull request #${pullRequest.number} based on your engine suggestion.
+              
+              **Next steps:**
+              1. The maintainers will review the auto-generated data
+              2. An icon will be added for the engine
+              3. Once approved, your engine will be merged into the explorer!
+              
+              Thank you for contributing to the Workflow Engines Explorer! 🎉`
+            });
+
+      - name: Handle errors
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.get-issue.outputs.issue-number }},
+              body: `❌ **Auto-generation failed**
+              
+              There was an issue automatically creating a pull request for this engine suggestion.
+              
+              A maintainer will review this manually and create the PR if needed.
+              
+              Error details are available in the [workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}).`
+            });
