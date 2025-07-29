@@ -26,6 +26,13 @@ body:
     validations:
       required: true
 
+  - type: input
+    id: icon_suggestion
+    attributes:
+      label: Icon/Logo
+      description: Link to official logo/icon (optional - we can source this)
+      placeholder: "https://example.com/logo.png"
+
   - type: textarea
     id: description
     attributes:
@@ -44,13 +51,6 @@ body:
       placeholder: "Event, data, Process, Integration, Automation etc."
     validations:
       required: true
-
-  - type: input
-    id: icon_suggestion
-    attributes:
-      label: Icon/Logo
-      description: Link to official logo/icon (optional - we can source this)
-      placeholder: "https://example.com/logo.png"
 
   - type: textarea
     id: additional_context
