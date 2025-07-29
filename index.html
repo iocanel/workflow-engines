@@ -236,6 +236,10 @@
     // Check if page is opened via file:// protocol
     if (window.location.protocol === 'file:') {
       return new Promise((resolve) => {
+        // Hide the entire content div and show only the file loader
+        document.querySelector('.content').style.display = 'none';
+        document.querySelector('.sidebar').style.display = 'none';
+        
         const fileLoaderHtml = `
           <div style="padding: 30px; text-align: center; color: #666; max-width: 700px; margin: 0 auto;">
             <h2 style="color: #2c5aa0; margin-bottom: 20px;">📁 Load Workflow Engines Data</h2>
@@ -274,8 +278,11 @@
           </div>
         `;
         
-        // Insert the HTML immediately
-        document.getElementById('results').innerHTML = fileLoaderHtml;
+        // Insert the HTML immediately into the body after sidebar/content
+        const fileLoaderDiv = document.createElement('div');
+        fileLoaderDiv.id = 'fileLoader';
+        fileLoaderDiv.innerHTML = fileLoaderHtml;
+        document.body.appendChild(fileLoaderDiv);
         
         // Set up file loading functionality immediately after DOM insertion
         const loadFileBtn = document.getElementById('loadFileBtn');
@@ -311,8 +318,15 @@
                   // Update global workflowData
                   workflowData = jsonData;
                   
-                  // Clear the file loader interface
-                  document.getElementById('results').innerHTML = '';
+                  // Show the main interface again
+                  document.querySelector('.content').style.display = '';
+                  document.querySelector('.sidebar').style.display = '';
+                  
+                  // Remove the file loader
+                  const fileLoaderDiv = document.getElementById('fileLoader');
+                  if (fileLoaderDiv) {
+                    fileLoaderDiv.remove();
+                  }
                   
                   // Initialize the interface now that we have data
                   buildFacets();
