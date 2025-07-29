@@ -152,5 +152,12 @@
     "icon": "icons/spring-integration.png",
     "description": "A lightweight messaging framework that enables the creation of enterprise integration solutions built on the Spring Framework, supporting Enterprise Integration Patterns.",
     "tags": ["Integration", "Code flows", "Integration", "Code-as-workflow", "Ephemeral", "OpenSource", "Library"]
+  },
+  {
+    "name": "Restate",
+    "url": "https://restate.dev",
+    "icon": "icons/restate.png",
+    "description": "A durable execution platform for building resilient applications with workflows-as-code, providing automatic retry, recovery, and state management for distributed systems.",
+    "tags": ["Event", "Log", "Microservice orchestration", "Code-as-workflow", "Persistent", "Replayable", "Event-driven", "OpenSource", "Self Hosted", "Managed Service"]
   }
 ]
