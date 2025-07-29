@@ -121,20 +121,36 @@ jobs:
             const fs = require('fs');
             const path = './workflow-engines.json';
             
-            // Read current workflow engines
-            const currentData = JSON.parse(fs.readFileSync(path, 'utf8'));
+            // Read the original file as text to preserve formatting
+            const originalContent = fs.readFileSync(path, 'utf8');
             
             // Parse new engine data
             const newEngine = JSON.parse('${{ steps.parse.outputs.engine-data }}');
             
-            // Add new engine to the array
-            currentData.push(newEngine);
+            // Convert new engine to JSON string with 2-space indentation
+            const newEngineJson = JSON.stringify(newEngine, null, 2);
             
-            // Sort by name for consistency
-            currentData.sort((a, b) => a.name.localeCompare(b.name));
+            // Find the position of the last closing bracket
+            const lastBracketIndex = originalContent.lastIndexOf(']');
             
-            // Write back to file with proper formatting
-            fs.writeFileSync(path, JSON.stringify(currentData, null, 2));
+            // Check if the array is empty or has items
+            const beforeLastBracket = originalContent.substring(0, lastBracketIndex).trim();
+            const needsComma = beforeLastBracket.endsWith('}');
+            
+            // Create the insertion string
+            const indentedNewEngine = newEngineJson.split('\n').map((line, index) => {
+              if (index === 0) return '  ' + line; // First line gets 2 spaces
+              return line.length > 0 ? '  ' + line : line; // Other lines get 2 spaces if not empty
+            }).join('\n');
+            
+            // Build the new content by inserting before the last bracket
+            const newContent = originalContent.substring(0, lastBracketIndex) +
+                              (needsComma ? ',\n' : '') +
+                              indentedNewEngine + '\n' +
+                              originalContent.substring(lastBracketIndex);
+            
+            // Write back to file
+            fs.writeFileSync(path, newContent);
             
             console.log(`Added ${newEngine.name} to workflow-engines.json`);
 
