@@ -160,4 +160,15 @@
     "description": "A durable execution platform for building resilient applications with workflows-as-code, providing automatic retry, recovery, and state management for distributed systems.",
     "tags": ["Event", "Log", "Microservice orchestration", "Code-as-workflow", "Persistent", "Replayable", "Event-driven", "OpenSource", "Self Hosted", "Managed Service"]
   }
+,
+  {
+    "name": "Apache NiFi",
+    "url": "https://nifi.apache.org/",
+    "icon": "icons/apache-nifi.png",
+    "description": "NiFi can be considered as an ETL engine  written in Java. In this context the term bpm is not a precice definition of what nifi provides. Nevertheless most bpm systems out there can be considered as ETL engines since we feed them with data that are being processed and provide output, or many outputs, that is routed to other systems or other internal bpm flows.",
+    "tags": [
+      "Integration",
+      "even driven"
+    ]
+  }
 ]
